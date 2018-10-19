@@ -12,19 +12,15 @@
     },
     "installer": {
         "script": [
-            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop install `$app'\"; exit 1 }",
             "Get-ChildItem `$dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name `$_.Name.Replace(`$_.Extension, ' (TrueType)') -Value `$_.Name -Force | Out-Null",
-            "    Copy-Item \"`$dir\\`$_\" -destination \"`$env:windir\\Fonts\"",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name `$_.Name.Replace(`$_.Extension, ' (TrueType)') -Value `$_.FullName -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall `$app'\"; exit 1 }",
             "Get-ChildItem `$dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name `$_.Name.Replace(`$_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
-            "    Remove-Item \"`$env:windir\\Fonts\\`$(`$_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "    Remove-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name `$_.Name.Replace(`$_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
             "}",
             "Write-Host \"The '`$(`$app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
         ]
@@ -37,13 +33,11 @@ $fontNames = @(
     "AnonymousPro",
     "AurulentSansMono",
     "BitstreamVeraSansMono",
-    "CodeNewRoman",
     "DejaVuSansMono",
     "DroidSansMono",
     "FantasqueSansMono",
     "FiraCode",
     "FiraMono",
-    "Gohu",
     "Hack",
     "Hasklig",
     "HeavyData",
