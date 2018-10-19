@@ -4,8 +4,11 @@
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SourceCodePro.zip",
     "hash": "f8e0cc0aceefa97a2c3f256fbc9a460038059ef0a193f02960f644daddfdfbbb",
-    "checkver": "github",
     "depends": "sudo",
+    "checkver": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases",
+        "re": "/ryanoasis/nerd-fonts/releases/download/v(?<version>[\\d\\.]+)/SourceCodePro.zip"
+    },
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/SourceCodePro.zip"
     },
