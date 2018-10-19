@@ -6,7 +6,6 @@
     "url": " ",
     "hash": " ",
     "checkver": "github",
-    "depends": "sudo",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v`$version/%name.zip"
     },
