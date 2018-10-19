@@ -4,7 +4,10 @@
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/BitstreamVeraSansMono.zip",
     "hash": "285c7c08ee2d651cf1f0bdb8a83b787adcab2449ac09b04c23aa4ae17a50d84b",
-    "checkver": "github",
+    "checkver": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases",
+        "re": "/ryanoasis/nerd-fonts/releases/download/v(?<version>[\\d\\.]+)/BitstreamVeraSansMono.zip"
+    },
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/BitstreamVeraSansMono.zip"
     },

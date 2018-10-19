@@ -4,7 +4,10 @@
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Hack.zip",
     "hash": "d1147483fd0310fa6bfce6799f47654e3f435010fdc709877b15a23f090ed41c",
-    "checkver": "github",
+    "checkver": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases",
+        "re": "/ryanoasis/nerd-fonts/releases/download/v(?<version>[\\d\\.]+)/Hack.zip"
+    },
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Hack.zip"
     },

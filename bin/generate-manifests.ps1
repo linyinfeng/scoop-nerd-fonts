@@ -5,7 +5,10 @@
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "url": " ",
     "hash": " ",
-    "checkver": "github",
+    "checkver": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases",
+        "re": "/ryanoasis/nerd-fonts/releases/download/v(?<version>[\\d\\.]+)/%name.zip"
+    },
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v`$version/%name.zip"
     },
@@ -31,11 +34,13 @@ $fontNames = @(
     "AnonymousPro",
     "AurulentSansMono",
     "BitstreamVeraSansMono",
+    "CodeNewRoman",
     "DejaVuSansMono",
     "DroidSansMono",
     "FantasqueSansMono",
     "FiraCode",
     "FiraMono",
+    "Gohu",
     "Hack",
     "Hasklig",
     "HeavyData",
