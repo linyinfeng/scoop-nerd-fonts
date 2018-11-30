@@ -68,7 +68,7 @@ $fontNames = @(
 
 # Generate manifests
 $fontNames | ForEach-Object {
-    $templateString -replace "%name", $_ | Out-File -FilePath "$PSScriptRoot\..\$_-NF.json" -Encoding utf8
+    $templateString -replace "%name", $_ | Out-File -FilePath "$PSScriptRoot\..\$_-NF-User.json" -Encoding utf8
 }
 
 # Use scoop's checkver script to autoupdate the manifests
