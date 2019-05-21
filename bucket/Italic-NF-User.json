@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Italic.zip",
+    "hash": "b4f7b6c6680009e84626ce87908038fee322d68085697a5e45254275ffbc73c3",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Italic.zip"
+    },
+    "installer": {
+        "script": [
+            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic' -Force | Out-Null",
+            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic'",
+            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/AurulentSansMono.zip",
+    "hash": "916a4a74f895587578cb5b2d55c37e513a87a15ce65c394e99f9c95a04b60fba",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/AurulentSansMono.zip"
+    },
+    "installer": {
+        "script": [
+            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono' -Force | Out-Null",
+            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono'",
+            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/AnonymousPro.zip",
+    "hash": "a5ff0e9d8564594fafc0f3698ecaf08b38f87d140550736038fab0bc2b57b018",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/AnonymousPro.zip"
+    },
+    "installer": {
+        "script": [
+            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AnonymousPro' -Force | Out-Null",
+            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AnonymousPro' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AnonymousPro'",
+            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}

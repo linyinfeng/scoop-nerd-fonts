@@ -1,0 +1,25 @@
+{
+    "version": "0.8.1",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/be5invis/Sarasa-Gothic",
+    "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v0.8.1/sarasa-gothic-ttf-0.8.1.7z",
+    "hash": "00f8bceecd76befd929f89a2b4cc7e870e3a90f78a568acc96a9b2616a6fc6cb",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v$version/sarasa-gothic-ttf-$version.7z"
+    },
+    "installer": {
+        "script": [
+            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic' -Force | Out-Null",
+            "Get-ChildItem $dir -filter 'sarasa*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic'",
+            "Write-Host \"The 'Sarasa-Gothic' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Ubuntu.zip",
+    "hash": "1c63e03728d89bbc6df6d357d156b5adb1c90bde247933c7cb429e6482ad22bb",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Ubuntu.zip"
+    },
+    "installer": {
+        "script": [
+            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Ubuntu' -Force | Out-Null",
+            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Ubuntu' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Ubuntu'",
+            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}
