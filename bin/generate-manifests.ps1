@@ -11,20 +11,20 @@
     },
     "installer": {
         "script": [
-            "`$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop %name\"",
+            "`$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "`$Acl = Get-Acl `$dir",
+            "`$Acl.SetAccessRule(`$AccessRule)",
+            "`Set-Acl -Path `$dir -AclObject `$Acl",
+            "`$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.`$app\"",
             "New-Item -Path `$TargetKey -Force | Out-Null",
-            "`$TargetDirectory = New-Item -ItemType Directory -Force \"`$Env:HOMEDRIVE`$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop %name\"",
             "Get-ChildItem `$dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    `$TargetFile = Join-Path -Path `$TargetDirectory -ChildPath `$(`$_.Name)",
-            "    Copy-Item `$_.FullName -Destination `$TargetFile",
-            "    New-ItemProperty -Path `$TargetKey -Name `$_.Name.Replace(`$_.Extension, ' (TrueType)') -Value `$TargetFile -Force | Out-Null",
+            "    New-ItemProperty -Path `$TargetKey -Name `$_.Name -Value `$_.FullName -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop %name'",
-            "Remove-Item -Recurse -Force \"`$Env:HOMEDRIVE`$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop %name\""
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.`$app'"
         ]
     }
 }
@@ -85,15 +85,15 @@ $fontNames | ForEach-Object {
     $templateString -replace "%name", $_ | Out-File -FilePath "$PSScriptRoot\..\bucket\$_-NF-User.json" -Encoding utf8
 }
 
-# Use scoop's checkver script to autoupdate the manifests
-& $psscriptroot\checkver.ps1 * -u
+# # Use scoop's checkver script to autoupdate the manifests
+# & $psscriptroot\checkver.ps1 * -u
 
-# Keep frozen files from updating
-$frozenFiles = @(
-    "CodeNewRoman-NF-User",
-    "Gohu-NF-User"
-)
+# # Keep frozen files from updating
+# $frozenFiles = @(
+#     "CodeNewRoman-NF-User",
+#     "Gohu-NF-User"
+# )
 
-$frozenFiles | ForEach-Object {
-    git checkout "../bucket/$_.json"
-}
+# $frozenFiles | ForEach-Object {
+#     git checkout "../bucket/$_.json"
+# }

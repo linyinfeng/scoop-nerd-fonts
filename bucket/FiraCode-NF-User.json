@@ -10,20 +10,18 @@
     },
     "installer": {
         "script": [
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop FiraCode\"",
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.$app\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "$TargetDirectory = New-Item -ItemType Directory -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop FiraCode\"",
             "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    $TargetFile = Join-Path -Path $TargetDirectory -ChildPath $($_.Name)",
-            "    Copy-Item $_.FullName -Destination $TargetFile",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $TargetFile -Force | Out-Null",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
-        "script": [
-            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop FiraCode'",
-            "Remove-Item -Recurse -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop FiraCode\""
-        ]
+        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.$app'"
     }
 }
