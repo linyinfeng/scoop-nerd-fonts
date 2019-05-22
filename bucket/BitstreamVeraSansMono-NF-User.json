@@ -10,16 +10,20 @@
     },
     "installer": {
         "script": [
-            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.BitstreamVeraSansMono' -Force | Out-Null",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop BitstreamVeraSansMono\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "$TargetDirectory = New-Item -ItemType Directory -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop BitstreamVeraSansMono\"",
             "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.BitstreamVeraSansMono' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "    $TargetFile = Join-Path -Path $TargetDirectory -ChildPath $($_.Name)",
+            "    Copy-Item $_.FullName -Destination $TargetFile",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $TargetFile -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.BitstreamVeraSansMono'",
-            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop BitstreamVeraSansMono'",
+            "Remove-Item -Recurse -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop BitstreamVeraSansMono\""
         ]
     }
 }

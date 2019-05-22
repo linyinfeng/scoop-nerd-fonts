@@ -10,16 +10,20 @@
     },
     "installer": {
         "script": [
-            "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic' -Force | Out-Null",
-            "Get-ChildItem $dir -filter 'sarasa*.ttf' | ForEach-Object {",
-            "    New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic' -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop SarasaGothic\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "$TargetDirectory = New-Item -ItemType Directory -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop SarasaGothic\"",
+            "Get-ChildItem $dir -filter '*.ttf' | ForEach-Object {",
+            "    $TargetFile = Join-Path -Path $TargetDirectory -ChildPath $($_.Name)",
+            "    Copy-Item $_.FullName -Destination $TargetFile",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $TargetFile -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SarasaGothic'",
-            "Write-Host \"The 'Sarasa-Gothic' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop SarasaGothic'",
+            "Remove-Item -Recurse -Force \"$Env:HOMEDRIVE$Env:HOMEPATH\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Scoop SarasaGothic\""
         ]
     }
 }
