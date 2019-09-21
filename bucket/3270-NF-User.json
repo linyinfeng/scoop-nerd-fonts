@@ -1,27 +1,27 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/3270.zip",
-    "hash": "d4b34b2d6c7cb758d8d6c7213a08a732a3759da123904e316df08e38d421641b",
-    "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/3270.zip"
     },
+    "checkver": "github",
+    "hash": "d4b34b2d6c7cb758d8d6c7213a08a732a3759da123904e316df08e38d421641b",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "installer": {
         "script": [
             "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.3270\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.3270-NF-User\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
+    "license": "MIT",
     "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.3270'"
-    }
+        "script": "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.3270-NF-User\""
+    },
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/3270.zip",
+    "version": "2.0.0"
 }

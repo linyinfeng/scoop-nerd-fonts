@@ -1,27 +1,27 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/AurulentSansMono.zip",
-    "hash": "916a4a74f895587578cb5b2d55c37e513a87a15ce65c394e99f9c95a04b60fba",
-    "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/AurulentSansMono.zip"
     },
+    "checkver": "github",
+    "hash": "916a4a74f895587578cb5b2d55c37e513a87a15ce65c394e99f9c95a04b60fba",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "installer": {
         "script": [
             "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono-NF-User\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
+    "license": "MIT",
     "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono'"
-    }
+        "script": "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.AurulentSansMono-NF-User\""
+    },
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/AurulentSansMono.zip",
+    "version": "2.0.0"
 }

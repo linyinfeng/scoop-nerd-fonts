@@ -1,0 +1,33 @@
+{
+  "autoupdate": {
+    "hash": {
+      "find": "href=\"#source-hansourcehanttc\">.+?MD5 hash is ([A-Fa-f0-9]{32})",
+      "url": "https://github.com/adobe-fonts/source-han-super-otc"
+    },
+    "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/$version/SourceHan.ttc"
+  },
+  "checkver": "github",
+  "hash": "md5:8f12d2fff6492b917496a3718e60cd5b",
+  "homepage": "https://github.com/adobe-fonts/source-han-super-otc",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Source-Han-Mega-OTC-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*.ttc' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "OFL-1.1",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Source-Han-Mega-OTC-User\""
+    ]
+  },
+  "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/20190603/SourceHan.ttc",
+  "version": "20190603"
+}

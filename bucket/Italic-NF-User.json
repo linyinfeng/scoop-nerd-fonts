@@ -1,27 +1,27 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Italic.zip",
-    "hash": "b4f7b6c6680009e84626ce87908038fee322d68085697a5e45254275ffbc73c3",
-    "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Italic.zip"
     },
+    "checkver": "github",
+    "hash": "b4f7b6c6680009e84626ce87908038fee322d68085697a5e45254275ffbc73c3",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "installer": {
         "script": [
             "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic-NF-User\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
+    "license": "MIT",
     "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic'"
-    }
+        "script": "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Italic-NF-User\""
+    },
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Italic.zip",
+    "version": "2.0.0"
 }

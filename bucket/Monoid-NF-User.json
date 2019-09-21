@@ -1,27 +1,27 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Monoid.zip",
-    "hash": "ad63efadd67364f2e20eb1d0c387927dd0d638899036a70b4a06ae7842178d48",
-    "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Monoid.zip"
     },
+    "checkver": "github",
+    "hash": "ad63efadd67364f2e20eb1d0c387927dd0d638899036a70b4a06ae7842178d48",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "installer": {
         "script": [
             "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Monoid\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Monoid-NF-User\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
+    "license": "MIT",
     "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Monoid'"
-    }
+        "script": "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Monoid-NF-User\""
+    },
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Monoid.zip",
+    "version": "2.0.0"
 }

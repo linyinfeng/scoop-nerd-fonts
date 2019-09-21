@@ -1,27 +1,29 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/ProFont.zip",
-    "hash": "a82de4b5d5322bbe21ba3aed4520d7f2f3da72280a4caf005fb3d2787b36d325",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/ProFont.zip"
-    },
-    "installer": {
-        "script": [
-            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "$Acl = Get-Acl $dir",
-            "$Acl.SetAccessRule($AccessRule)",
-            "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ProFont\"",
-            "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ProFont'"
-    }
+  "autoupdate": {
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/ProFont.zip"
+  },
+  "checkver": "github",
+  "hash": "a82de4b5d5322bbe21ba3aed4520d7f2f3da72280a4caf005fb3d2787b36d325",
+  "homepage": "https://github.com/ryanoasis/nerd-fonts",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ProFont-NF-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "MIT",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ProFont-NF-User\""
+    ]
+  },
+  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/ProFont.zip",
+  "version": "2.0.0"
 }

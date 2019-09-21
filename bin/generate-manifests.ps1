@@ -8,24 +8,6 @@
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v`$version/%name.zip"
-    },
-    "installer": {
-        "script": [
-            "`$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "`$Acl = Get-Acl `$dir",
-            "`$Acl.SetAccessRule(`$AccessRule)",
-            "`Set-Acl -Path `$dir -AclObject `$Acl",
-            "`$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.%name\"",
-            "New-Item -Path `$TargetKey -Force | Out-Null",
-            "Get-ChildItem `$dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path `$TargetKey -Name `$_.Name -Value `$_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.%name'"
-        ]
     }
 }
 "@

@@ -1,27 +1,27 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Cousine.zip",
-    "hash": "dae2a0a363b03ef2adaf9cd341e9e5210b23daef7dea617bdf79c375ced50c4e",
-    "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Cousine.zip"
     },
+    "checkver": "github",
+    "hash": "dae2a0a363b03ef2adaf9cd341e9e5210b23daef7dea617bdf79c375ced50c4e",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "installer": {
         "script": [
             "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Cousine\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Cousine-NF-User\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
             "}"
         ]
     },
+    "license": "MIT",
     "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Cousine'"
-    }
+        "script": "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Cousine-NF-User\""
+    },
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Cousine.zip",
+    "version": "2.0.0"
 }

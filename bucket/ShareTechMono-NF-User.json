@@ -1,27 +1,29 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/ShareTechMono.zip",
-    "hash": "0d697cf592e46d6c36e017a84e58a05343e3b4c2ea71e40671de3930c1582b9f",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/ShareTechMono.zip"
-    },
-    "installer": {
-        "script": [
-            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "$Acl = Get-Acl $dir",
-            "$Acl.SetAccessRule($AccessRule)",
-            "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ShareTechMono\"",
-            "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ShareTechMono'"
-    }
+  "autoupdate": {
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/ShareTechMono.zip"
+  },
+  "checkver": "github",
+  "hash": "0d697cf592e46d6c36e017a84e58a05343e3b4c2ea71e40671de3930c1582b9f",
+  "homepage": "https://github.com/ryanoasis/nerd-fonts",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ShareTechMono-NF-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "MIT",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.ShareTechMono-NF-User\""
+    ]
+  },
+  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/ShareTechMono.zip",
+  "version": "2.0.0"
 }

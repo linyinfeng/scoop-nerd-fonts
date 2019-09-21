@@ -1,27 +1,29 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SpaceMono.zip",
-    "hash": "c41c8b4d9a634a8662aaa70d4541a534e82a13fbcc40c14149a01cda32925648",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/SpaceMono.zip"
-    },
-    "installer": {
-        "script": [
-            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "$Acl = Get-Acl $dir",
-            "$Acl.SetAccessRule($AccessRule)",
-            "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SpaceMono\"",
-            "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SpaceMono'"
-    }
+  "autoupdate": {
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/SpaceMono.zip"
+  },
+  "checkver": "github",
+  "hash": "c41c8b4d9a634a8662aaa70d4541a534e82a13fbcc40c14149a01cda32925648",
+  "homepage": "https://github.com/ryanoasis/nerd-fonts",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SpaceMono-NF-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "MIT",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SpaceMono-NF-User\""
+    ]
+  },
+  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SpaceMono.zip",
+  "version": "2.0.0"
 }

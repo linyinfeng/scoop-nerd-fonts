@@ -1,0 +1,99 @@
+#!/usr/bin/env run-cargo-script
+//! Script for update all manifests
+//!
+//! ```cargo
+//! [package]
+//! edition = "2018"
+//!
+//! [dependencies]
+//! serde_json = "*"
+//! structopt = "*"
+//! log = "*"
+//! env_logger = "*"
+//! ```
+use serde_json::json;
+use serde_json::Value;
+use std::env;
+use std::fs;
+use std::io;
+use std::path::PathBuf;
+
+fn main() {
+    env_logger::init();
+
+    const BUCKET_DIR_NAME: &'static str = "bucket";
+
+    let bucket_dir_path = {
+        let script_dir = env::var_os("CARGO_SCRIPT_BASE_PATH").unwrap();
+        let mut path: PathBuf = script_dir.into();
+        path.pop();
+        path.push(BUCKET_DIR_NAME);
+        path
+    };
+    log::info!("bucket directory path = {:?}", bucket_dir_path);
+    let bucket_dir = fs::read_dir(&bucket_dir_path).unwrap();
+    for dir_entry in bucket_dir {
+        let dir_entry = dir_entry.unwrap();
+        if dir_entry.file_type().unwrap().is_file() {
+            let file_path = dir_entry.path();
+            log::info!("processing manifest file {:?}", file_path);
+
+            let name = file_path.file_stem().expect("invalid manifest name");
+            let name = name.to_str().unwrap();
+            log::debug!("manifest name = {}", name);
+            let file = fs::File::open(&file_path).unwrap();
+            let reader = io::BufReader::new(file);
+            let manifest: Value = serde_json::from_reader(reader).unwrap();
+            log::debug!("original manifest = {}", manifest);
+            let updated = update_manifest(name, manifest);
+            log::debug!("updated manifest = {}", updated);
+            let file = fs::File::create(&file_path).unwrap();
+            let writer = io::BufWriter::new(file);
+            serde_json::to_writer_pretty(writer, &updated).unwrap();
+        }
+    }
+}
+
+fn update_manifest(name: &str, mut manifest: Value) -> Value {
+    let (font_path, filter) = get_fonts_location(name);
+    let manifest_object = manifest.as_object_mut().unwrap();
+    *manifest_object.get_mut("installer").unwrap() = json!(
+        {
+            "script": [
+                "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+                "$Acl = Get-Acl $dir",
+                "$Acl.SetAccessRule($AccessRule)",
+                "Set-Acl -Path $dir -AclObject $Acl",
+                format!("$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.{}\"", name),
+                "New-Item -Path $TargetKey -Force | Out-Null",
+                format!("Get-ChildItem \"$dir/{}\" -Filter '{}' | ForEach-Object {{", font_path, filter),
+                "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+                "}"
+            ]
+        }
+    );
+    *manifest_object.get_mut("uninstaller").unwrap() = json!(
+        {
+            "script": [
+                format!("Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.{}\"", name),
+            ]
+        }
+    );
+    manifest
+}
+
+fn get_fonts_location(name: &str) -> (&'static str, &'static str) {
+    if name.contains("NF") {
+        ("", "*Windows Compatible.*")
+    } else {
+        match name {
+            "FiraCode-User" => ("ttf", "*.ttf"),
+            "Noto-CJK-Mega-OTC-User" => ("", "*.ttc"),
+            "SarasaGothic-TTC-User" => ("", "*.ttc"),
+            "SarasaGothic-User" => ("", "*.ttf"),
+            "Source-Han-Mega-OTC-User" => ("", "*.ttc"),
+            "Source-Han-Noto-CJK-Ultra-OTC-User" => ("", "*.ttc"),
+            _ => unimplemented!("unknown font: {}", name),
+        }
+    }
+}

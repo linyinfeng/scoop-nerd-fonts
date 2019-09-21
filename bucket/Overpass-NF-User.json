@@ -1,27 +1,29 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Overpass.zip",
-    "hash": "eeabe6120133bcc9af4cce452bb4bdaad5ea0ef5ecaaa6fef16f5c1b04c3280c",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Overpass.zip"
-    },
-    "installer": {
-        "script": [
-            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "$Acl = Get-Acl $dir",
-            "$Acl.SetAccessRule($AccessRule)",
-            "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass\"",
-            "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass'"
-    }
+  "autoupdate": {
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Overpass.zip"
+  },
+  "checkver": "github",
+  "hash": "eeabe6120133bcc9af4cce452bb4bdaad5ea0ef5ecaaa6fef16f5c1b04c3280c",
+  "homepage": "https://github.com/ryanoasis/nerd-fonts",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass-NF-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "MIT",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass-NF-User\""
+    ]
+  },
+  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Overpass.zip",
+  "version": "2.0.0"
 }

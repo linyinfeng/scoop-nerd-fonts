@@ -1,27 +1,29 @@
 {
-    "version": "2.0.0",
-    "license": "MIT",
-    "homepage": "https://github.com/ryanoasis/nerd-fonts",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SourceCodePro.zip",
-    "hash": "f8e0cc0aceefa97a2c3f256fbc9a460038059ef0a193f02960f644daddfdfbbb",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/SourceCodePro.zip"
-    },
-    "installer": {
-        "script": [
-            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-            "$Acl = Get-Acl $dir",
-            "$Acl.SetAccessRule($AccessRule)",
-            "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SourceCodePro\"",
-            "New-Item -Path $TargetKey -Force | Out-Null",
-            "Get-ChildItem $dir -filter '*Windows Compatible.*' | ForEach-Object {",
-            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SourceCodePro'"
-    }
+  "autoupdate": {
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/SourceCodePro.zip"
+  },
+  "checkver": "github",
+  "hash": "f8e0cc0aceefa97a2c3f256fbc9a460038059ef0a193f02960f644daddfdfbbb",
+  "homepage": "https://github.com/ryanoasis/nerd-fonts",
+  "installer": {
+    "script": [
+      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+      "$Acl = Get-Acl $dir",
+      "$Acl.SetAccessRule($AccessRule)",
+      "Set-Acl -Path $dir -AclObject $Acl",
+      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SourceCodePro-NF-User\"",
+      "New-Item -Path $TargetKey -Force | Out-Null",
+      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+      "}"
+    ]
+  },
+  "license": "MIT",
+  "uninstaller": {
+    "script": [
+      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.SourceCodePro-NF-User\""
+    ]
+  },
+  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SourceCodePro.zip",
+  "version": "2.0.0"
 }
