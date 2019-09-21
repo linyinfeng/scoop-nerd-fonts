@@ -30,13 +30,13 @@ fn main() {
         path.push(BUCKET_DIR_NAME);
         path
     };
-    log::info!("bucket directory path = {:?}", bucket_dir_path);
+    println!("bucket directory path = {:?}", bucket_dir_path);
     let bucket_dir = fs::read_dir(&bucket_dir_path).unwrap();
     for dir_entry in bucket_dir {
         let dir_entry = dir_entry.unwrap();
         if dir_entry.file_type().unwrap().is_file() {
             let file_path = dir_entry.path();
-            log::info!("processing manifest file {:?}", file_path);
+            println!("processing manifest file {:?}", file_path);
 
             let name = file_path.file_stem().expect("invalid manifest name");
             let name = name.to_str().unwrap();
@@ -57,7 +57,7 @@ fn main() {
 fn update_manifest(name: &str, mut manifest: Value) -> Value {
     let (font_path, filter) = get_fonts_location(name);
     let manifest_object = manifest.as_object_mut().unwrap();
-    *manifest_object.get_mut("installer").unwrap() = json!(
+    manifest_object.insert("installer".to_owned(), json!(
         {
             "script": [
                 "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
@@ -71,14 +71,14 @@ fn update_manifest(name: &str, mut manifest: Value) -> Value {
                 "}"
             ]
         }
-    );
-    *manifest_object.get_mut("uninstaller").unwrap() = json!(
+    ));
+    manifest_object.insert("uninstaller".to_owned(), json!(
         {
             "script": [
                 format!("Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.{}\"", name),
             ]
         }
-    );
+    ));
     manifest
 }
 
@@ -93,6 +93,7 @@ fn get_fonts_location(name: &str) -> (&'static str, &'static str) {
             "SarasaGothic-User" => ("", "*.ttf"),
             "Source-Han-Mega-OTC-User" => ("", "*.ttc"),
             "Source-Han-Noto-CJK-Ultra-OTC-User" => ("", "*.ttc"),
+            "Cascadia-Code-User" => ("", "*.ttf"),
             _ => unimplemented!("unknown font: {}", name),
         }
     }
