@@ -1,29 +1,30 @@
 {
-  "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Hermit.zip"
-  },
-  "checkver": "github",
-  "hash": "5c656e844dfaf14355e5e607c738dabc903e1985a375bb907f1a200956774a18",
-  "homepage": "https://github.com/ryanoasis/nerd-fonts",
-  "installer": {
-    "script": [
-      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-      "$Acl = Get-Acl $dir",
-      "$Acl.SetAccessRule($AccessRule)",
-      "Set-Acl -Path $dir -AclObject $Acl",
-      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hermit-NF-User\"",
-      "New-Item -Path $TargetKey -Force | Out-Null",
-      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
-      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-      "}"
-    ]
-  },
-  "license": "MIT",
-  "uninstaller": {
-    "script": [
-      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hermit-NF-User\""
-    ]
-  },
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Hermit.zip",
-  "version": "2.0.0"
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hermit.zip",
+    "hash": "551fcb801963cd5ced87a85d135589053bbd23b6f5674ddb985d9e50b2bc49c6",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Hermit.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hermit-NF\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hermit-NF\""
+        ]
+    }
 }

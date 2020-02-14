@@ -1,33 +1,33 @@
 {
-  "autoupdate": {
-    "hash": {
-      "find": "href=\"#noto-cjknotocjkttc\">.+?MD5 hash is ([A-Fa-f0-9]{32})",
-      "url": "https://github.com/adobe-fonts/source-han-super-otc"
+    "version": "20190603",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/adobe-fonts/source-han-super-otc",
+    "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/20190603/NotoCJK.ttc",
+    "hash": "md5:5fb3f42574c27390bc60347858f4bf8e",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/$version/NotoCJK.ttc",
+        "hash": {
+            "url": "https://github.com/adobe-fonts/source-han-super-otc",
+            "find": "href=\"#noto-cjknotocjkttc\">.+?MD5 hash is ([A-Fa-f0-9]{32})"
+        }
     },
-    "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/$version/NotoCJK.ttc"
-  },
-  "checkver": "github",
-  "hash": "dd0745d3f27824cfbcd820877ab7a824a4c01d9561e95e648a47db27803ef746",
-  "homepage": "https://github.com/adobe-fonts/source-han-super-otc",
-  "installer": {
-    "script": [
-      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-      "$Acl = Get-Acl $dir",
-      "$Acl.SetAccessRule($AccessRule)",
-      "Set-Acl -Path $dir -AclObject $Acl",
-      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Noto-CJK-Mega-OTC-User\"",
-      "New-Item -Path $TargetKey -Force | Out-Null",
-      "Get-ChildItem \"$dir/\" -Filter '*.ttc' | ForEach-Object {",
-      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-      "}"
-    ]
-  },
-  "license": "OFL-1.1",
-  "uninstaller": {
-    "script": [
-      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Noto-CJK-Mega-OTC-User\""
-    ]
-  },
-  "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/20190603/NotoCJK.ttc",
-  "version": "20190603"
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Noto-CJK-Mega-OTC\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*.ttc' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Noto-CJK-Mega-OTC\""
+        ]
+    }
 }

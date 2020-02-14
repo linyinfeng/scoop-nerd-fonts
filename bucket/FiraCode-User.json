@@ -1,29 +1,29 @@
 {
-  "autoupdate": {
-    "url": "https://github.com/tonsky/FiraCode/releases/download/$version/FiraCode_$version.zip"
-  },
-  "checkver": "github",
-  "hash": "60d5b1106b708cc134c521aae4e503bb1d2ec3c9bf8ad978f2c659820505d492",
-  "homepage": "https://github.com/tonsky/FiraCode",
-  "installer": {
-    "script": [
-      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-      "$Acl = Get-Acl $dir",
-      "$Acl.SetAccessRule($AccessRule)",
-      "Set-Acl -Path $dir -AclObject $Acl",
-      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraCode-User\"",
-      "New-Item -Path $TargetKey -Force | Out-Null",
-      "Get-ChildItem \"$dir/ttf\" -Filter '*.ttf' | ForEach-Object {",
-      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-      "}"
-    ]
-  },
-  "license": "OFL-1.1",
-  "uninstaller": {
-    "script": [
-      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraCode-User\""
-    ]
-  },
-  "url": "https://github.com/tonsky/FiraCode/releases/download/2/FiraCode_2.zip",
-  "version": "2"
+    "version": "2",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/tonsky/FiraCode",
+    "url": "https://github.com/tonsky/FiraCode/releases/download/2/FiraCode_2.zip",
+    "hash": "60D5B1106B708CC134C521AAE4E503BB1D2EC3C9BF8AD978F2C659820505D492",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/tonsky/FiraCode/releases/download/$version/FiraCode_$version.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraCode\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/ttf\" -Filter '*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraCode\""
+        ]
+    }
 }

@@ -1,29 +1,30 @@
 {
-  "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/HeavyData.zip"
-  },
-  "checkver": "github",
-  "hash": "f39181014c5b65a9aa0a850fa0d4de94f7ebf406fa8c6dad8f5aadb3d74c98d8",
-  "homepage": "https://github.com/ryanoasis/nerd-fonts",
-  "installer": {
-    "script": [
-      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-      "$Acl = Get-Acl $dir",
-      "$Acl.SetAccessRule($AccessRule)",
-      "Set-Acl -Path $dir -AclObject $Acl",
-      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.HeavyData-NF-User\"",
-      "New-Item -Path $TargetKey -Force | Out-Null",
-      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
-      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-      "}"
-    ]
-  },
-  "license": "MIT",
-  "uninstaller": {
-    "script": [
-      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.HeavyData-NF-User\""
-    ]
-  },
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/HeavyData.zip",
-  "version": "2.0.0"
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/HeavyData.zip",
+    "hash": "cbe30eb404ac2f6460b6afcec0812e2dffc2f8d77b701b4310b789f20f86b918",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/HeavyData.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.HeavyData-NF\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.HeavyData-NF\""
+        ]
+    }
 }

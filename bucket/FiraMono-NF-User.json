@@ -1,29 +1,30 @@
 {
-  "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/FiraMono.zip"
-  },
-  "checkver": "github",
-  "hash": "1eb587b0985d61a9323e0cc979ce16cf820013f0dd235c3a5df979029f6e6e34",
-  "homepage": "https://github.com/ryanoasis/nerd-fonts",
-  "installer": {
-    "script": [
-      "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
-      "$Acl = Get-Acl $dir",
-      "$Acl.SetAccessRule($AccessRule)",
-      "Set-Acl -Path $dir -AclObject $Acl",
-      "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraMono-NF-User\"",
-      "New-Item -Path $TargetKey -Force | Out-Null",
-      "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
-      "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
-      "}"
-    ]
-  },
-  "license": "MIT",
-  "uninstaller": {
-    "script": [
-      "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraMono-NF-User\""
-    ]
-  },
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/FiraMono.zip",
-  "version": "2.0.0"
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip",
+    "hash": "f4e966bddbbd85826c72b5d6dfcf3c2857095f2e2819784b5babc2a95a544d38",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/FiraMono.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraMono-NF\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.FiraMono-NF\""
+        ]
+    }
 }

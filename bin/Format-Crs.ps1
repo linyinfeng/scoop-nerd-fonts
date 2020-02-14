@@ -1,1 +1,1 @@
-rustfmt "$PSScriptRoot/update-manifests.crs"
+rustfmt "$PSScriptRoot/create-user-scripts.crs"

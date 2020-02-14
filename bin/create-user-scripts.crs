@@ -1,0 +1,140 @@
+#!/usr/bin/env run-cargo-script
+//! Script for update all manifests
+//!
+//! ```cargo
+//! [package]
+//! edition = "2018"
+//!
+//! [dependencies]
+//! serde = "*"
+//! serde_json = { version = "*", features = ["preserve_order"] }
+//! log = "*"
+//! env_logger = "*"
+//! ```
+use serde::ser::Serialize;
+use serde_json::json;
+use serde_json::ser::PrettyFormatter;
+use serde_json::ser::Serializer;
+use serde_json::Value;
+use std::env;
+use std::fs;
+use std::io;
+use std::path::PathBuf;
+
+fn main() {
+    env_logger::init_from_env(env_logger::Env::default().default_filter_or("warn"));
+
+    const BUCKET_DIR_NAME: &'static str = "bucket";
+
+    let bucket_dir_path = {
+        let script_dir = env::var_os("CARGO_SCRIPT_BASE_PATH").unwrap();
+        let mut path: PathBuf = script_dir.into();
+        path.pop();
+        path.push(BUCKET_DIR_NAME);
+        path
+    };
+    log::info!("bucket directory path = {:?}", bucket_dir_path);
+    let bucket_dir = fs::read_dir(&bucket_dir_path).unwrap();
+    for dir_entry in bucket_dir {
+        let dir_entry = dir_entry.unwrap();
+        if dir_entry.file_type().unwrap().is_file() {
+            let file_path = dir_entry.path();
+            let name = file_path
+                .file_stem()
+                .unwrap()
+                .to_str()
+                .expect("file name is not valid string");
+            if name.ends_with("-User") {
+                log::debug!("skipped manifest file {:?}", file_path);
+                continue;
+            }
+            log::info!("processing manifest file {:?}", file_path);
+            log::debug!("manifest name = {}", name);
+            let file = fs::File::open(&file_path).unwrap();
+            let reader = io::BufReader::new(file);
+            let manifest: Value = serde_json::from_reader(reader).unwrap();
+            log::debug!("original manifest = {}", manifest);
+            let updated = match update_manifest(name, manifest) {
+                Some(u) => u,
+                None => {
+                    log::warn!("unsuppored font: {}", name);
+                    continue;
+                }
+            };
+            log::debug!("updated manifest = {}", updated);
+
+            let new_path = file_path.with_file_name(format!("{}-User.json", name));
+            let file = fs::File::create(&new_path).unwrap();
+            let writer = io::BufWriter::new(file);
+            let mut serializer = create_serializer(writer);
+            updated.serialize(&mut serializer).unwrap();
+        }
+    }
+}
+
+fn create_serializer<'a, W: io::Write>(writer: W) -> Serializer<W, PrettyFormatter<'a>> {
+    let formatter = PrettyFormatter::with_indent(b"    ");
+    Serializer::with_formatter(writer, formatter)
+}
+
+fn update_manifest(name: &str, mut manifest: Value) -> Option<Value> {
+    let (font_path, filter) = get_fonts_location(name)?;
+    let manifest_object = manifest.as_object_mut().unwrap();
+    manifest_object.insert("installer".to_owned(), json!(
+        {
+            "script": [
+                "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+                "$Acl = Get-Acl $dir",
+                "$Acl.SetAccessRule($AccessRule)",
+                "Set-Acl -Path $dir -AclObject $Acl",
+                format!("$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.{}\"", name),
+                "New-Item -Path $TargetKey -Force | Out-Null",
+                format!("Get-ChildItem \"$dir/{}\" -Filter '{}' | ForEach-Object {{", font_path, filter),
+                "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+                "}"
+            ]
+        }
+    ));
+    manifest_object.insert("uninstaller".to_owned(), json!(
+        {
+            "script": [
+                format!("Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.{}\"", name),
+            ]
+        }
+    ));
+    Some(manifest)
+}
+
+fn get_fonts_location(name: &str) -> Option<(&'static str, &'static str)> {
+    if name.ends_with("-NF") {
+        Some(("", "*Windows Compatible.*"))
+    } else {
+        match name {
+            "FiraCode" => Some(("ttf", "*.ttf")),
+            "Noto-CJK-Mega-OTC" => Some(("", "*.ttc")),
+            "SarasaGothic-TTC" => Some(("", "*.ttc")),
+            "SarasaGothic" => Some(("", "*.ttf")),
+            "Source-Han-Mega-OTC" => Some(("", "*.ttc")),
+            "Source-Han-Noto-CJK-Ultra-OTC" => Some(("", "*.ttc")),
+            "Cascadia-Code" => Some(("", "*.ttf")),
+            "Cascadia-Mono" => Some(("", "*.ttf")),
+            "Cascadia-MonoPL" => Some(("", "*.ttf")),
+            "Cascadia-PL" => Some(("", "*.ttf")),
+            "Delugia-Nerd-Font-Complete" => Some(("", "*.ttf")),
+            "Delugia-Nerd-Font" => Some(("", "*.ttf")),
+            "Hanamin" => Some(("", "*.ttf")),
+            "IPAmj-Mincho" => Some(("", "*.ttf")),
+            "JetBrains-Mono" => Some(("", "*.ttf")),
+            "Open-Sans" => Some(("", "*.ttf")),
+            "Raleway" => Some(("", "*.ttf")),
+            "Rounded-L-Mplus" => Some(("", "*.ttf")),
+            "Rounded-Mplus" => Some(("", "*.ttf")),
+            "Rounded-X-Mplus" => Some(("", "*.ttf")),
+            "Setofont" => Some(("", "setofont*.ttf")),
+            "Tanuki-Permanent-Marker" => Some(("", "*.ttf")),
+            "Wenquanyi-Microhei" => Some(("", "wqy-microhei*.ttc")),
+            "Wenquanyi-Zenhei" => Some(("", "wqy-zenhei*.ttc")),
+            _ => None,
+        }
+    }
+}

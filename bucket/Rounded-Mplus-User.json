@@ -1,0 +1,33 @@
+{
+    "homepage": "http://jikasei.me/font/rounded-mplus/about.html",
+    "description": "CJK font based on the Mplus font, but with more rounded shape.",
+    "version": "20150529",
+    "license": {
+        "identifier": "Freeware",
+        "url": "http://jikasei.me/font/rounded-mplus/license.html"
+    },
+    "url": "https://ymu.dl.osdn.jp/users/8/8569/rounded-mplus-20150529.7z",
+    "hash": "e746736c8ded99fe9a9dd72a241ec59435eaa282a18e7ac33a26dc0578c06ff7",
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Rounded-Mplus\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Rounded-Mplus\""
+        ]
+    },
+    "checkver": "https://osdn.jp/downloads/users/8/(?<tag>\\d+)/rounded-mplus-(\\d{8}).7z",
+    "autoupdate": {
+        "url": "https://ymu.dl.osdn.jp/users/8/$matchTag/rounded-mplus-$version.7z"
+    }
+}

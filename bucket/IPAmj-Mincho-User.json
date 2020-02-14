@@ -1,0 +1,35 @@
+{
+    "version": "006.01",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://mojikiban.ipa.go.jp/1300.html#LicenseEng"
+    },
+    "homepage": "https://mojikiban.ipa.go.jp/1300.html",
+    "description": "Free CJK font maintained by Japanese government agency. It covers a large set of characters.",
+    "url": "https://mojikiban.ipa.go.jp/OSCDL/IPAmjMincho/ipamjm00601.zip",
+    "hash": "35494e0f2896f38b3f7369a8421a895cea6440a42c0a66ac95eab47d6ed25b68",
+    "checkver": {
+        "regex": "Ver\\.([\\d.]+)</h2>"
+    },
+    "autoupdate": {
+        "url": "https://mojikiban.ipa.go.jp/OSCDL/IPAmjMincho/ipamjm$cleanVersion.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.IPAmj-Mincho\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.IPAmj-Mincho\""
+        ]
+    }
+}

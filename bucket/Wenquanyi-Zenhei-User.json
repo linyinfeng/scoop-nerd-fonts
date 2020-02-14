@@ -1,0 +1,33 @@
+{
+    "homepage": "http://wenq.org/",
+    "description": "CJK sans-serif font that focuses on on-screen readibility.",
+    "version": "0.9.45",
+    "license": "GPL-2.0-or-later",
+    "url": "https://dl.sourceforge.net/projects/wqy/files/wqy-zenhei/0.9.45 (Fighting-state RC1)/wqy-zenhei-0.9.45.tar.gz",
+    "hash": "sha1:b86b65d3048ade868fcc89229cfac6baf80a3e54",
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Wenquanyi-Zenhei\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter 'wqy-zenhei*.ttc' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Wenquanyi-Zenhei\""
+        ]
+    },
+    "checkver": {
+        "url": "https://sourceforge.net/projects/wqy/files/wqy-zenhei/",
+        "regex": "<tr title=\\\"([\\d.]+)(?<suffix>.*?)\\\""
+    },
+    "autoupdate": {
+        "url": "https://dl.sourceforge.net/projects/wqy/files/wqy-zenhei/$version$matchSuffix/wqy-zenhei-$version.tar.gz"
+    }
+}
