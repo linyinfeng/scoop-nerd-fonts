@@ -2,11 +2,11 @@
     "version": "1911.21.3",
     "license": "OFL-1.1",
     "homepage": "https://github.com/adam7/delugia-code",
-    "url": "https://github.com/adam7/delugia-code/releases/download/v1911.21.3/Delugia.Nerd.Font.Complete.ttf",
-    "hash": "33ab99e94629f416c67c1baf6e3f6d1f39482ded09b3914fa3bdf0a48cb2a0ae",
+    "url": "https://github.com/adam7/delugia-code/releases/download/v1911.21.3/Delugia.Nerd.Font.Book.ttf",
+    "hash": "da49c91c05b780a591c645483b8975c5c0519df2d16c7fcf68a5876444cb9afe",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/adam7/delugia-code/releases/download/v$version/Delugia.Nerd.Font.Complete.ttf"
+        "url": "https://github.com/adam7/delugia-code/releases/download/v$version/Delugia.Nerd.Font.Book.ttf"
     },
     "installer": {
         "script": [
@@ -14,7 +14,7 @@
             "$Acl = Get-Acl $dir",
             "$Acl.SetAccessRule($AccessRule)",
             "Set-Acl -Path $dir -AclObject $Acl",
-            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Delugia-Nerd-Font-Complete\"",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Delugia-Nerd-Font-Book\"",
             "New-Item -Path $TargetKey -Force | Out-Null",
             "Get-ChildItem \"$dir/\" -Filter '*.ttf' | ForEach-Object {",
             "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
@@ -23,7 +23,7 @@
     },
     "uninstaller": {
         "script": [
-            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Delugia-Nerd-Font-Complete\""
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Delugia-Nerd-Font-Book\""
         ]
     }
 }

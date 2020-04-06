@@ -120,6 +120,7 @@ fn get_fonts_location(name: &str) -> Option<(&'static str, &'static str)> {
             "Cascadia-Mono" => Some(("", "*.ttf")),
             "Cascadia-MonoPL" => Some(("", "*.ttf")),
             "Cascadia-PL" => Some(("", "*.ttf")),
+            "Delugia-Nerd-Font-Book" => Some(("", "*.ttf")),
             "Delugia-Nerd-Font-Complete" => Some(("", "*.ttf")),
             "Delugia-Nerd-Font" => Some(("", "*.ttf")),
             "Hanamin" => Some(("", "*.ttf")),
