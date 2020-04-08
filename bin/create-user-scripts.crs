@@ -111,6 +111,7 @@ fn get_fonts_location(name: &str) -> Option<(&'static str, &'static str)> {
     } else {
         match name {
             "FiraCode" => Some(("ttf", "*.ttf")),
+            "Font-Awesome" => Some(("", "*.otf")),
             "Noto-CJK-Mega-OTC" => Some(("", "*.ttc")),
             "SarasaGothic-TTC" => Some(("", "*.ttc")),
             "SarasaGothic" => Some(("", "*.ttf")),
