@@ -1,0 +1,30 @@
+{
+    "version": "1.1",
+    "description": "Code font with monospaced ligatures based on Source Code Pro",
+    "homepage": "https://github.com/i-tu/Hasklig",
+    "license": "OFL-1.1",
+    "url": "https://github.com/i-tu/Hasklig/releases/download/1.1/Hasklig-1.1.zip",
+    "hash": "98eccec22bc0ae3838a099a911230f62197e681b6a6c30e5149c52f5fc6a95c3",
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hasklig\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*.otf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Hasklig\""
+        ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/i-tu/Hasklig/releases/download/$version/Hasklig-$version.zip"
+    }
+}
