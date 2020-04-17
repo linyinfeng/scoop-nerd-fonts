@@ -1,0 +1,32 @@
+{
+    "version": "5.000",
+    "license": "SIL OFL 1.1",
+    "homepage": "https://software.sil.org/andika/",
+    "url": "https://software.sil.org/downloads/r/andika/AndikaCompact-5.000.zip",
+    "hash": "047d7abc6a12abf83fe0e62177e835434392c3c6d79e46433bc610fda05e0331",
+    "checkver": {
+        "url": "https://software.sil.org/andika/download/",
+        "regex": "Andika ([\\d.]+) Developer"
+    },
+    "autoupdate": {
+        "url": "https://software.sil.org/downloads/r/andika/AndikaCompact-$version.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.andika-compact\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/AndikaCompact-$version\" -Filter '*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.andika-compact\""
+        ]
+    }
+}

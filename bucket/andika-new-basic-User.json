@@ -1,0 +1,32 @@
+{
+    "version": "5.500",
+    "license": "SIL OFL 1.1",
+    "homepage": "https://software.sil.org/andika/",
+    "url": "https://software.sil.org/downloads/r/andika/AndikaNewBasic-5.500.zip",
+    "hash": "18308284a3e98cd7712d057742d8d6cd040a52ec0479a1dcf92d57815f8d368a",
+    "checkver": {
+        "url": "https://software.sil.org/andika/download/",
+        "regex": "Andika New Basic ([\\d.]+) Web"
+    },
+    "autoupdate": {
+        "url": "https://software.sil.org/downloads/r/andika/AndikaNewBasic-$version.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.andika-new-basic\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/AndikaNewBasic-$version\" -Filter '*.ttf' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.andika-new-basic\""
+        ]
+    }
+}

@@ -110,6 +110,10 @@ fn get_fonts_location(name: &str) -> Option<(&'static str, &'static str)> {
         Some(("", "*Windows Compatible.*"))
     } else {
         match name {
+            "andika-compact" => Some(("AndikaCompact-$version", "*.ttf")),
+            "andika-new-basic" => Some(("AndikaNewBasic-$version", "*.ttf")),
+            "andika" => Some(("Andika-$version", "*.ttf")),
+            "basic-comical-nc" => Some(("", "*.ttf")),
             "Cascadia-Code" => Some(("", "*.ttf")),
             "Cascadia-Mono" => Some(("", "*.ttf")),
             "Cascadia-MonoPL" => Some(("", "*.ttf")),
