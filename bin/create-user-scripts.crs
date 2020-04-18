@@ -57,7 +57,7 @@ fn main() {
             let updated = match update_manifest(name, manifest) {
                 Some(u) => u,
                 None => {
-                    log::warn!("unsuppored font: {}", name);
+                    log::warn!("unsupported font: {}", name);
                     continue;
                 }
             };
