@@ -1,9 +1,9 @@
 {
-    "version": "4",
+    "version": "5.1",
     "license": "OFL-1.1",
     "homepage": "https://github.com/tonsky/FiraCode",
-    "url": "https://github.com/tonsky/FiraCode/releases/download/4/Fira_Code_v4.zip",
-    "hash": "46ed45d1a793a56e13d31ed10fb7e09f5277731953a0d9522915644fc59086d8",
+    "url": "https://github.com/tonsky/FiraCode/releases/download/5.1/Fira_Code_v5.1.zip",
+    "hash": "81c35bb83a81bc4f879806e169ca958947a6f5abc92ac31a631fd9cf49632684",
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/tonsky/FiraCode/releases/download/$version/Fira_Code_v$version.zip"
