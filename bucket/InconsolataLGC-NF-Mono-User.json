@@ -1,0 +1,30 @@
+{
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/InconsolataLGC.zip",
+    "hash": "ed0217588f8169e9fdf0a02ce9f68f3cfc81b92006b5ba9e631a929f03b5869c",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/InconsolataLGC.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.InconsolataLGC-NF-Mono\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Mono Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.InconsolataLGC-NF-Mono\""
+        ]
+    }
+}

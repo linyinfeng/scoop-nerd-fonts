@@ -1,0 +1,30 @@
+{
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Overpass.zip",
+    "hash": "b5f7522a2e884562cfca4c32fa708d537b884efb5d055ad617a3b503d9f842f7",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Overpass.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass-NF-Mono\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Mono Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.Overpass-NF-Mono\""
+        ]
+    }
+}

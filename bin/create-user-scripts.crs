@@ -107,7 +107,9 @@ fn update_manifest(name: &str, mut manifest: Value) -> Option<Value> {
 
 fn get_fonts_location(name: &str) -> Option<(&'static str, &'static str)> {
     if name.ends_with("-NF") {
-        Some(("", "*Windows Compatible.*"))
+        Some(("", "*Complete Windows Compatible.*"))
+    } else if name.ends_with("-NF-Mono") {
+        Some(("", "*Mono Windows Compatible.*"))
     } else {
         match name {
             "andika-compact" => Some(("AndikaCompact-$version", "*.ttf")),

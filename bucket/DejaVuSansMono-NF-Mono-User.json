@@ -1,0 +1,30 @@
+{
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip",
+    "hash": "3fbcc4904c88f68d24c8b479784a1aba37f2d78b1162d21f6fc85a58ffcc0e0f",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/DejaVuSansMono.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.DejaVuSansMono-NF-Mono\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Mono Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.DejaVuSansMono-NF-Mono\""
+        ]
+    }
+}

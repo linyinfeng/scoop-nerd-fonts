@@ -1,0 +1,30 @@
+{
+    "version": "2.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/ryanoasis/nerd-fonts",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/UbuntuMono.zip",
+    "hash": "1034658826a4561a1ff460aa4261b5f47e8b201601619242e31bbde14ecc4871",
+    "checkver": "github",
+    "depends": "sudo",
+    "autoupdate": {
+        "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/UbuntuMono.zip"
+    },
+    "installer": {
+        "script": [
+            "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(\"NT AUTHORITY\\LOCAL SERVICE\", \"ReadAndExecute, Synchronize\", \"ContainerInherit, ObjectInherit\", \"None\", \"Allow\")",
+            "$Acl = Get-Acl $dir",
+            "$Acl.SetAccessRule($AccessRule)",
+            "Set-Acl -Path $dir -AclObject $Acl",
+            "$TargetKey = \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.UbuntuMono-NF-Mono\"",
+            "New-Item -Path $TargetKey -Force | Out-Null",
+            "Get-ChildItem \"$dir/\" -Filter '*Mono Windows Compatible.*' | ForEach-Object {",
+            "    New-ItemProperty -Path $TargetKey -Name $_.Name -Value $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"HKCU:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\Scoop.UbuntuMono-NF-Mono\""
+        ]
+    }
+}
